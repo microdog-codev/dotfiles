@@ -6,7 +6,7 @@
 # Deprecated: pyenv-based Python management; use uv instead.
 # source "$HOME/.zshrc.pyenv"
 
-# Preferred: add completions for uv, the Python version and project manager.
+# Preferred: install uv with Zinit and enable uv and uvx completions.
 # source "$HOME/.zshrc.uv"
 
 # Install the miniserve static file server.

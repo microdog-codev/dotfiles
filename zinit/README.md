@@ -169,7 +169,7 @@ alias cwork='cd "$WORKSPACE"'
 
 # Deprecated: use uv for Python management instead.
 # source ~/.zshrc.pyenv
-# Preferred: uv completions for Python version and project management.
+# Preferred: install uv with Zinit and enable uv/uvx completions.
 # source ~/.zshrc.uv
 # source ~/.zshrc.miniserve
 # source ~/.zshrc.git-diff
@@ -188,7 +188,8 @@ exec zsh -l
 
 - `.zshrc.pyenv` is deprecated; it installs and initializes `pyenv` through
   Zinit. Use `uv` for Python version and project management instead.
-- `.zshrc.uv` adds completions for an already installed `uv` command.
+- `.zshrc.uv` installs `uv` and `uvx` from GitHub Releases through Zinit and
+  generates completions for both commands.
 - `.zshrc.miniserve` installs the `miniserve` file server.
 - `.zshrc.git-diff` adds `fgd`, an `fzf` picker with colored Git diff previews.
 - `.zshrc.gpg-agent` configures GPG Agent and adds `gpg-tty` to repair its TTY.

@@ -1,6 +1,5 @@
-zinit ice as"completion" id-as"local/uv-completions" \
-    atclone'uv generate-shell-completion zsh > _uv' \
-    atpull'%atclone' \
-    nocompile \
-    run-atpull
-zinit light zdharma-continuum/null
+zinit ice from"gh-r" as"command" pick"uv*/uv" \
+    atclone'./uv*/uv generate-shell-completion zsh > _uv &&
+        ./uv*/uvx --generate-shell-completion zsh > _uvx' \
+    atpull'%atclone'
+zinit light astral-sh/uv
