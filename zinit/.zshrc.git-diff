@@ -1,0 +1,29 @@
+# diff-so-fancy
+if (( $+functions[zinit] || $+commands[zinit] )); then
+    zinit ice wait"2" lucid as"program" pick"bin/git-dsf"
+    zinit load zdharma-continuum/zsh-diff-so-fancy
+fi
+
+#
+# Better git diff
+fgd() {
+    emulate -L zsh
+    setopt pipefail
+
+    local git_root
+    if ! git_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+        print -u2 "fgd: not inside a Git repository"
+        return 1
+    fi
+
+    local -a diff_args preview_cmd
+    diff_args=("$@")
+    preview_cmd=(git -C "$git_root" dsf --color=always "${diff_args[@]}" --)
+
+    local preview
+    preview="${(j: :)${(@q)preview_cmd}} {}"
+
+    git -C "$git_root" diff --name-only "${diff_args[@]}" | fzf -m --ansi \
+        --preview "$preview" --preview-window=right:65% \
+        --bind 'alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up'
+}

@@ -1,0 +1,6 @@
+zinit ice as"completion" id-as"local/uv-completions" \
+    atclone'uv generate-shell-completion zsh > _uv' \
+    atpull'%atclone' \
+    nocompile \
+    run-atpull
+zinit light zdharma-continuum/null

@@ -1,0 +1,10 @@
+# gpg-agent
+zinit ice lucid wait
+zinit snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+
+gpg-tty()
+{
+    killall pinentry-curses 2>/dev/null || true
+    export GPG_TTY="$(tty)"
+    gpg-connect-agent updatestartuptty /bye
+}

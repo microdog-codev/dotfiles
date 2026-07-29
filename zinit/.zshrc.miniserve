@@ -1,0 +1,6 @@
+zinit ice from"gh-r" as"program" \
+  mv"miniserve-* -> miniserve" \
+  atclone"chmod +x ./miniserve; ./miniserve --print-completions zsh > _miniserve" \
+  atpull'%atclone' \
+  pick"miniserve"
+zinit light svenstaro/miniserve
