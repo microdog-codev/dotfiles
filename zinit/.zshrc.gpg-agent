@@ -1,10 +1,25 @@
-# gpg-agent
-zinit ice lucid wait
-zinit snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+# Use gpg-agent for OpenPGP prompts and SSH authentication.
+if (( ! $+commands[gpgconf] || ! $+commands[gpg-connect-agent] )); then
+    print -u2 'GPG Agent module requires GnuPG. Run gnupg/install.sh first.'
+    return
+fi
+
+export GPG_TTY="$TTY"
+unset SSH_AGENT_PID
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+gpg-connect-agent /bye >/dev/null 2>&1
+
+_gpg-agent-update-tty()
+{
+    export GPG_TTY="$TTY"
+    gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec _gpg-agent-update-tty
 
 gpg-tty()
 {
-    killall pinentry-curses 2>/dev/null || true
-    export GPG_TTY="$(tty)"
+    export GPG_TTY="$TTY"
     gpg-connect-agent updatestartuptty /bye
 }

@@ -36,23 +36,11 @@ if [[ -n "$BACKUP_DIR" ]]; then
     echo "Existing configs backed up to $BACKUP_DIR"
 fi
 
-if [[ ! -f ~/.zshrc.local ]]; then
-    tee -a ~/.zshrc.local >/dev/null <<EOF
-#source ~/.zshrc.pyenv
-#source ~/.zshrc.git-diff
-#source ~/.zshrc.gpg-agent
-EOF
-fi
-
-if [[ ! -f ~/.zshenv ]]; then
-    tee -a ~/.zshenv >/dev/null <<EOF
-#PCTL_PROXY_ADDRESS=127.0.0.1
-#PCTL_PROXY_PORT=6152
-
-#NO_PROXY=localhost,127.0.0.0
-
-#skip_global_compinit=1
-EOF
-fi
+for config_name in .zshenv .zshrc.local; do
+    target_path="$HOME/$config_name"
+    if [[ ! -e "$target_path" && ! -L "$target_path" ]]; then
+        cp "$DIR/templates/$config_name" "$target_path"
+    fi
+done
 
 exec zsh -l

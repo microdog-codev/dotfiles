@@ -27,9 +27,10 @@ brew install fzf ripgrep
 zsh zsh/zinit/install.zsh
 ```
 
-The installer links the files into your home directory and opens a login shell.
-The first prompt can take a few minutes while Zinit downloads everything. If a
-target file already exists, it is moved into `~/.zsh-config-backup.XXXXXX` first.
+The installer links the shared files into your home directory, copies `.zshenv`
+and `.zshrc.local` from `templates/` when they do not already exist, and opens
+a login shell. Existing local files are preserved; replaced shared files are
+moved into `~/.zsh-config-backup.XXXXXX` first.
 
 To make Zsh the default shell, run this once and then log out and back in:
 
@@ -153,9 +154,12 @@ Manual pages are colorized automatically.
 
 ## Personal Settings
 
-Put private or machine-specific settings in `~/.zshrc.local`. Do not edit
-`~/.zshrc` directly: it is a symlink into this repository, so such edits change
-the shared configuration.
+Put private or machine-specific interactive settings in `~/.zshrc.local`. Do
+not edit `~/.zshrc` directly: it is a symlink into this repository, so such
+edits change the shared configuration.
+
+Put environment settings needed by every Zsh invocation, such as `PATH`
+updates, in `~/.zshenv` instead.
 
 Example `~/.zshrc.local`:
 
@@ -163,8 +167,9 @@ Example `~/.zshrc.local`:
 export WORKSPACE="$HOME/Projects"
 alias cwork='cd "$WORKSPACE"'
 
-# Optional modules supplied by this repository:
+# Deprecated: use uv for Python management instead.
 # source ~/.zshrc.pyenv
+# Preferred: install uv with Zinit and enable uv/uvx completions.
 # source ~/.zshrc.uv
 # source ~/.zshrc.miniserve
 # source ~/.zshrc.git-diff
@@ -181,8 +186,10 @@ exec zsh -l
 
 ### Optional modules
 
-- `.zshrc.pyenv` installs and initializes `pyenv` through Zinit.
-- `.zshrc.uv` adds completions for an already installed `uv` command.
+- `.zshrc.pyenv` is deprecated; it installs and initializes `pyenv` through
+  Zinit. Use `uv` for Python version and project management instead.
+- `.zshrc.uv` installs `uv` and `uvx` from GitHub Releases through Zinit and
+  generates completions for both commands.
 - `.zshrc.miniserve` installs the `miniserve` file server.
 - `.zshrc.git-diff` adds `fgd`, an `fzf` picker with colored Git diff previews.
 - `.zshrc.gpg-agent` configures GPG Agent and adds `gpg-tty` to repair its TTY.

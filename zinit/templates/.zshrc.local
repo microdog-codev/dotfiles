@@ -1,0 +1,22 @@
+# Machine-specific interactive shell settings.
+
+#
+# Optional modules supplied by this repository:
+
+# Deprecated: pyenv-based Python management; use uv instead.
+# source "$HOME/.zshrc.pyenv"
+
+# Preferred: install uv with Zinit and enable uv and uvx completions.
+# source "$HOME/.zshrc.uv"
+
+# Install the miniserve static file server.
+# source "$HOME/.zshrc.miniserve"
+
+# Add fgd, an fzf picker with colorized Git diff previews.
+# source "$HOME/.zshrc.git-diff"
+
+# Configure GPG Agent and add gpg-tty for repairing its TTY.
+# source "$HOME/.zshrc.gpg-agent"
+
+# Propose and optionally create commits from staged changes with the llm CLI.
+# source "$HOME/.zshrc.gitllm"

@@ -1,2 +1,2 @@
-# pyenv
+# Deprecated: use uv for Python version and project management instead.
 zinit pack"bgn" git for pyenv
