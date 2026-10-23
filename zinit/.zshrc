@@ -91,8 +91,11 @@ if [[ "$OS_TYPE" == "linux" ]]; then
 fi
 
 # jeffreytse/zsh-vi-mode
+# Keep the plugin's default NEX readkey engine. With ZVM_READKEY_ENGINE_ZLE the
+# surround text objects (ci", di", ca', ci(, ...) never execute: zvm_range_handler
+# hands them back through ZVM_KEYS, which only the NEX handler (zle -U) consumes.
+# The stale ZVM_KEYS then corrupts every later c/d/y keypress on the line.
 function zvm_config() {
-  ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
   ZVM_KEYTIMEOUT=0.03
   ZVM_ESCAPE_KEYTIMEOUT=0.01
 }
@@ -101,6 +104,17 @@ function zvm_after_init() {
   bindkey '^[[B' history-beginning-search-forward
   bindkey '^P' history-beginning-search-backward
   bindkey '^N' history-beginning-search-forward
+
+  # Work around upstream bracketed-paste corruption (jeffreytse/zsh-vi-mode
+  # issues #353 and #238): when a paste arrives in chunks with gaps longer than
+  # KEYTIMEOUT, ZLE ends the paste early and the leftover closing sequence is
+  # read as keys; ESC leaves insert mode and vicmd's ~ flips the case of the
+  # last character. Swallow the closing sequence whenever it reaches a keymap.
+  zvm_swallow_bracketed_paste_end() { : }
+  zle -N zvm_swallow_bracketed_paste_end
+  bindkey -M viins '^[[201~' zvm_swallow_bracketed_paste_end
+  bindkey -M vicmd '^[[201~' zvm_swallow_bracketed_paste_end
+  bindkey -M visual '^[[201~' zvm_swallow_bracketed_paste_end
 }
 zinit ice depth=1
 zinit light jeffreytse/zsh-vi-mode
